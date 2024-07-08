@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ProyectoP2.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ProyectoP2"
+    xmlns:pages="clr-namespace:ProyectoP2.Views"
+    Shell.FlyoutBehavior="Flyout"
+    FlyoutBackgroundColor="#3B5D50">
+    
+
+    <Shell.FlyoutHeader>
+        <Image Source="bookswap.png" WidthRequest="160" Margin="30"></Image>
+    </Shell.FlyoutHeader>
+
+    <ShellContent
+        Icon="home.svg"
+        Title="Inicio"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" />
+
+    <ShellContent
+        Icon="ticket.svg"
+        Title="Categorias"
+        ContentTemplate="{DataTemplate pages:CategoriasPage}"
+        Route="CategoriasPage" />
+
+    <ShellContent
+       Icon="clipboard.svg"
+       Title="Inventario"
+       ContentTemplate="{DataTemplate pages:InventarioPage}"
+       Route="InventarioPage" />
+
+    <ShellContent
+       Icon="shopping_cart.svg"
+       Title="Venta"
+       ContentTemplate="{DataTemplate pages:VentaPage}"
+       Route="VentaPage" />
+
+    <ShellContent
+        Icon="time.svg"
+        Title="Historial Venta"
+        ContentTemplate="{DataTemplate pages:HistoriaVentaPage}"
+        Route="HistoriaVentaPage" />
+
+    <ShellContent
+    Icon="time.svg"
+    Title="Acerca de Nosostros"
+    ContentTemplate="{DataTemplate pages:About}"
+    Route="About" />
+
+    <ShellContent
+    Icon="time.svg"
+    Title="Api"
+    ContentTemplate="{DataTemplate pages:Api}"
+    Route="Api" />
+
+
+    <MenuItem IconImageSource="stand_by.svg" Text="Cerrar Sesión" Clicked="CerrarSesion_Clicked">
+        
+    </MenuItem>
+
+</Shell>

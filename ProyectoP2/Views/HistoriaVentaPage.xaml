@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:util="clr-namespace:ProyectoP2.Utilities"
+             x:Class="ProyectoP2.Views.HistoriaVentaPage"
+             xmlns:model="clr-namespace:ProyectoP2.DTOs"
+             Title="Historial de Ventas"
+             BackgroundColor="{StaticResource bgFondo}">
+
+    <Grid Margin="5">
+        <Border BackgroundColor="{StaticResource bgFormulario}">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="5"/>
+            </Border.StrokeShape>
+
+            <Grid Margin="10" RowSpacing="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout Grid.Row="0" Orientation="Horizontal">
+                    <Label Text="Historial de ventas" FontSize="Subtitle" HorizontalOptions="StartAndExpand"/>
+                    <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" Color="Blue" HeightRequest="25" 
+                                       VerticalOptions="Start"/>
+                    <Button FontFamily="FaSolid" Text="{Static util:IconFont.RotateLeft}" FontSize="24" Padding="4" HeightRequest="35" WidthRequest="35"
+                     BackgroundColor="{StaticResource bgFondo}" 
+                     TextColor="White"
+                     Command="{Binding BindingContext.ActualizarCommand, Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                     CommandParameter="{Binding}"/>
+                </StackLayout>
+
+                <ScrollView Grid.Row="1" IsVisible="{Binding ListaVenta.Count, Converter={StaticResource EmptyToBoolConverter}}">
+                    <CollectionView ItemsSource="{Binding ListaVenta}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout ItemSpacing="5" Orientation="Vertical"/>
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:VentaDTO">
+                                <Border Padding="10,5" HorizontalOptions="FillAndExpand">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="5"/>
+                                    </Border.StrokeShape>
+
+                                    <Grid Padding="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="8*"/>
+                                            <ColumnDefinition Width="2*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackLayout Grid.Column="0" Orientation="Vertical">
+                                            <Label Text="Código de Venta:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding NumeroVenta}" Margin="0,0,0,5"/>
+
+                                            <Label Text="Cliente:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding Cliente}" Margin="0,0,0,5"/>
+
+                                            <Label Text="Pagado con:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding PagoCon}" Margin="0,0,0,5"/>
+
+                                            <Label Text="Cambio:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding Cambio}" Margin="0,0,0,5"/>
+
+                                            <Label Text="Fecha:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding FechaRegistro}" Margin="0,0,0,5"/>
+
+                                            <Label Text="Total:" FontAttributes="Bold"/>
+                                            <Label Text="{Binding Total, StringFormat='{0:C}'}" TextColor="#1d94ab" Margin="0,0,0,10"/>
+                                        </StackLayout>
+                                        <StackLayout Grid.Column="1" Orientation="Vertical" HorizontalOptions="End" VerticalOptions="CenterAndExpand">
+                                            <Button FontFamily="FaSolid" Text="{Static util:IconFont.Download}" FontSize="24" Padding="4" HeightRequest="60" WidthRequest="80"
+                                                     BackgroundColor="{StaticResource bgFondo}" 
+                                                     TextColor="White"
+                                                     Command="{Binding BindingContext.DescargarVentaCommand, Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                     CommandParameter="{Binding}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>
