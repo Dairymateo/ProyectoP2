@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ProyectoP2.Services
 {
@@ -13,6 +14,11 @@ namespace ProyectoP2.Services
     {
         private readonly VentaDbContext _context;
         private readonly ILogger<BookServices> _logger;
+
+        public BookServices()
+        {
+
+        }
 
         public BookServices(VentaDbContext context, ILogger<BookServices> logger)
         {
@@ -40,11 +46,19 @@ namespace ProyectoP2.Services
 
         public async Task<Producto> DevuelveProductoAsync()
         {
-            HttpClient client = new HttpClient();
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            var client = new HttpClient(handler); 
+
+            
+
+           // HttpClient client = new HttpClient();
             var response = await client.GetAsync("http://127.0.0.1:5000/random_producto");
             var responseJson = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(responseJson);
+            Console.WriteLine(responseJson);
             var producto = JsonConvert.DeserializeObject<Producto>(responseJson);
-            _logger.LogInformation($"Producto obtenido de la API: {producto.Nombre}");
+           // _logger.LogInformation($"Producto obtenido de la API: {producto.Nombre}");
             return producto;
         }
     }

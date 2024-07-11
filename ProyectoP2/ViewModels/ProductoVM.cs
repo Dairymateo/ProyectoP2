@@ -8,26 +8,34 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
-using System.Formats.Tar;
-using System.IO;
-using System.Reflection;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using ProyectoP2.Services;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ProyectoP2.ViewModels
 {
     public partial class ProductoVM : ObservableObject
     {
         private readonly VentaDbContext _context;
-        public ProductoVM(VentaDbContext context)
+        private readonly BookServices _bookServices;
+
+        public ProductoVM(VentaDbContext context, BookServices bookServices)
         {
+            _context = context;
+            _bookServices = bookServices;
+
             WeakReferenceMessenger.Default.Register<BarcodeScannedMessage>(this, (r, m) =>
             {
                 BarcodeMensajeRecibido(m.Value);
             });
-            _context = context;
+        }
+
+        [RelayCommand]
+        private async Task ObtenerYGuardarProductoAsync()
+        {
+            LoadingEsVisible = true;
+            await _bookServices.GuardarLibroAsync();
+            LoadingEsVisible = false;
+            await VolverInventario();
         }
 
         private int IdProducto;
@@ -59,8 +67,6 @@ namespace ProyectoP2.ViewModels
         {
             IdProducto = idProducto;
 
-
-
             if (IdProducto == 0)
             {
                 TituloPagina = "Agregar producto";
@@ -84,12 +90,10 @@ namespace ProyectoP2.ViewModels
                         LoadingEsVisible = false;
                         await ObtenerCategorias(encontrado.IdCategoria);
                     });
-
                 });
-
-
             }
         }
+
         private void BarcodeMensajeRecibido(BarcodeResult result)
         {
             MainThread.BeginInvokeOnMainThread(() =>
@@ -120,7 +124,7 @@ namespace ProyectoP2.ViewModels
                     if (idCategoria != 0)
                         CategoriaSeleccionada = ListaCategoria.First(c => c.IdCategoria == idCategoria);
                 });
-                });
+            });
         }
 
         [RelayCommand]
@@ -153,7 +157,6 @@ namespace ProyectoP2.ViewModels
 
             await Task.Run(async () =>
             {
-
                 if (IdProducto == 0)
                 {
                     var dbProducto = new Producto
@@ -176,7 +179,6 @@ namespace ProyectoP2.ViewModels
                         esCrear = true,
                         producto = enviarProducto
                     };
-
                 }
                 else
                 {
@@ -203,10 +205,6 @@ namespace ProyectoP2.ViewModels
                     await Shell.Current.Navigation.PopModalAsync();
                 });
             });
-
         }
-
-  
-        //adasdasdasd
     }
 }

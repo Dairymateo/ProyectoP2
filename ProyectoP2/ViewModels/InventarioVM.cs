@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoP2.DataAccess;
 using ProyectoP2.DTOs;
 using ProyectoP2.Models;
+using ProyectoP2.Services;
 using ProyectoP2.Utilities;
 using ProyectoP2.Views;
 
@@ -19,10 +20,12 @@ namespace ProyectoP2.ViewModels
     public partial class InventarioVM : ObservableObject
     {
         private readonly VentaDbContext _context;
+        private readonly BookServices _bookServices;
 
-        public InventarioVM(VentaDbContext context)
+        public InventarioVM(VentaDbContext context, BookServices bookServices)
         {
             _context = context;
+            _bookServices = bookServices;
             WeakReferenceMessenger.Default.Register<ProductoMessage>(this, (r, m) =>
             {
                 ProductoMensajeRecibido(m.Value);
@@ -196,7 +199,7 @@ namespace ProyectoP2.ViewModels
         [RelayCommand]
         private async Task IrProducto()
         {
-            await Shell.Current.Navigation.PushModalAsync(new ProductoPage(new ProductoVM(new DataAccess.VentaDbContext()), 0));
+            await Shell.Current.Navigation.PushModalAsync(new ProductoPage(new ProductoVM(_context, _bookServices), 0));
         }
 
         private void ProductoMensajeRecibido(ProductoResult result)
@@ -220,7 +223,7 @@ namespace ProyectoP2.ViewModels
         [RelayCommand]
         private async Task Editar(ProductoDTO producto)
         {
-            await Shell.Current.Navigation.PushModalAsync(new ProductoPage(new ProductoVM(new DataAccess.VentaDbContext()), producto.IdProducto));
+            await Shell.Current.Navigation.PushModalAsync(new ProductoPage(new ProductoVM(_context, _bookServices), producto.IdProducto));
         }
 
         [RelayCommand]

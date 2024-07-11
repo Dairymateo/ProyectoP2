@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ProyectoP2.ViewModels;assembly=ProyectoP2"
              x:Class="ProyectoP2.Views.Api"
              Title="Api">
-    
+
+    <ContentPage.BindingContext>
+        <vm:ApiViewModel />
+    </ContentPage.BindingContext>
+
     <StackLayout Padding="10">
         <Label Text="Libro Aleatorio" FontSize="24" HorizontalOptions="Center" />
-        <ListView ItemsSource="{Binding ListaProducto}" SelectedItem="{Binding ProductoSeleccionado}">
+        <ListView ItemsSource="{Binding ListaProducto}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Nombre}" Detail="{Binding Codigo}" />
+                    <TextCell Text="{Binding Nombre}" Detail="{Binding cantidad}" />
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

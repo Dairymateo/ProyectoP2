@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using ProyectoP2.DataAccess;
+using ProyectoP2.Services; // Asegúrate de agregar esta línea
 using ProyectoP2.ViewModels;
 using CommunityToolkit.Maui;
 using ProyectoP2.Views;
 using Microsoft.EntityFrameworkCore;
-using ProyectoP2.DataAccess;
-using Microsoft.Extensions.Logging;
 
 namespace ProyectoP2
 {
@@ -24,7 +23,10 @@ namespace ProyectoP2
                     fonts.AddFont("fa-solid-900.ttf", "FaSolid");
                 });
 
-            builder.Services.AddDbContext<VentaDbContext>();
+            builder.Services.AddDbContext<VentaDbContext>(options =>
+                options.UseSqlite("Filename=VentaDatabase.db"));
+
+            builder.Services.AddTransient<BookServices>();
 
             builder.Services.AddTransient<CategoriasPage>();
             builder.Services.AddTransient<CategoriasVM>();
@@ -46,6 +48,8 @@ namespace ProyectoP2
 
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainVM>();
+            builder.Services.AddTransient<Api>(); // Asegúrate de agregar esta línea
+            builder.Services.AddTransient<ApiViewModel>();
 
             var dbContext = new VentaDbContext();
             dbContext.Database.EnsureCreated();
@@ -58,7 +62,8 @@ namespace ProyectoP2
             Routing.RegisterRoute(nameof(ProductoPage), typeof(ProductoPage));
             Routing.RegisterRoute(nameof(BarcodePage), typeof(BarcodePage));
             Routing.RegisterRoute(nameof(BuscarProductoPage), typeof(BuscarProductoPage));
-            
+            Routing.RegisterRoute(nameof(Api), typeof(Api));
+
             return builder.Build();
         }
     }
