@@ -97,35 +97,61 @@
             <!-- Testimonials Section -->
             <StackLayout Padding="10" BackgroundColor="#B6D8CB">
                 <Label Text="Testimonios" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center"/>
-                <CarouselView ItemsSource="{Binding Testimonials}" HeightRequest="500">
+                <CarouselView ItemsSource="{Binding Testimonials}"
+                              IndicatorView="vistaIndicador"
+                              RemainingItemsThreshold="2"
+                              PeekAreaInsets="50"
+                              HeightRequest="520">
+                    <CarouselView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="40"/>
+                    </CarouselView.ItemsLayout>
                     <CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="vm:Testimonial">
-                            <StackLayout Padding="10">
-                                <Label Text="{Binding Quote}"
-                                       FontSize="Micro"
-                                       HorizontalOptions="Center"
-                                       HorizontalTextAlignment="Center"
-                                       VerticalOptions="CenterAndExpand" />
-                                <BoxView HeightRequest="40" Color="Transparent"/>
-                                <Image Source="{Binding Image}"
-                                       Aspect="AspectFit"
-                                       HeightRequest="200"
-                                       VerticalOptions="CenterAndExpand" />
-                                <BoxView HeightRequest="30" Color="Transparent"/>
-                                <Label Text="{Binding Name}"
-                                       FontAttributes="Bold"
-                                       HorizontalOptions="Center"
-                                       HorizontalTextAlignment="Center" />
-                                <Label Text="{Binding Title}"
-                                       HorizontalOptions="Center"
-                                       HorizontalTextAlignment="Center" />
-                            </StackLayout>
+                            <Frame HasShadow="True" CornerRadius="20" Padding="20" Margin="10" WidthRequest="400" HeightRequest="500" HorizontalOptions="Center" VerticalOptions="Center">
+                                <SwipeView>
+                                    <SwipeView.TopItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Favorite"
+                                                       BackgroundColor="LightGreen"/>
+                                        </SwipeItems>
+                                    </SwipeView.TopItems>
+                                    <SwipeView.BottomItems>
+                                        <SwipeItems>
+                                            <SwipeItem Text="Delete"
+                                                       BackgroundColor="LightPink"/>
+                                        </SwipeItems>
+                                    </SwipeView.BottomItems>
+                                    <StackLayout>
+                                        <Label Text="{Binding Quote}"
+                                               FontSize="Micro"
+                                               HorizontalOptions="Center"
+                                               HorizontalTextAlignment="Center"
+                                               VerticalOptions="CenterAndExpand" />
+                                        <BoxView HeightRequest="40" Color="Transparent"/>
+                                        <Image Source="{Binding Image}"
+                                               Aspect="AspectFit"
+                                               HeightRequest="150"
+                                               VerticalOptions="CenterAndExpand" />
+                                        <BoxView HeightRequest="30" Color="Transparent"/>
+                                        <Label Text="{Binding Name}"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="Center"
+                                               HorizontalTextAlignment="Center" />
+                                        <Label Text="{Binding Title}"
+                                               HorizontalOptions="Center"
+                                               HorizontalTextAlignment="Center" />
+                                    </StackLayout>
+                                </SwipeView>
+                            </Frame>
                         </DataTemplate>
-
                     </CarouselView.ItemTemplate>
                 </CarouselView>
+                <IndicatorView x:Name="vistaIndicador"
+                               IndicatorColor="Gray"
+                               SelectedIndicatorColor="Black"
+                               HorizontalOptions="Center"/>
             </StackLayout>
-
 
             <!-- Footer Section -->
             <StackLayout Padding="10" BackgroundColor="#F9F9F9">
