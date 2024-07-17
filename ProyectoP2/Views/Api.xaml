@@ -2,14 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:ProyectoP2.ViewModels;assembly=ProyectoP2"
              x:Class="ProyectoP2.Views.Api"
-             Title="Api">
+             Title="Cargar libros (Api)">
 
     <ContentPage.BindingContext>
         <vm:ApiViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout Padding="10">
-        <Label Text="Libro Aleatorio" FontSize="24" HorizontalOptions="Center" />
+    <StackLayout Padding="20">
+        <Label Text="Obtener Libro Aleatorio" FontSize="24" HorizontalOptions="Center" />
         <ListView ItemsSource="{Binding ListaProducto}">
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -17,8 +17,22 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Cargar Otro Libro" Command="{Binding EjecutarBusquedaCommand}" />
-        <Button Text="Guardar Libro" Command="{Binding GuardarLibroCommand}" />
+        <StackLayout Margin="0,10,0,0" Orientation="Horizontal">
+            <Button Text="Cargar Libro"
+            Command="{Binding EjecutarBusquedaCommand}"
+            BackgroundColor="#2196F3"   
+                TextColor="White"
+                FontSize="16" />
+
+            <Button Text="Guardar Libro"
+            Command="{Binding GuardarLibroCommand}"
+            BackgroundColor="{StaticResource bgSuccess}"   
+                    TextColor="White"
+                    FontSize="16"
+            Margin="10,0,0,0" />
+                   
+        </StackLayout>
+
         <ActivityIndicator IsVisible="{Binding LoadingEsVisible}" IsRunning="{Binding LoadingEsVisible}" />
     </StackLayout>
 </ContentPage>

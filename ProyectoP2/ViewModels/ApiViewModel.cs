@@ -11,16 +11,12 @@ namespace ProyectoP2.ViewModels
     {
         private readonly BookServices _bookServices;
 
+        // Constructor por defecto requerido por el XAML
         public ApiViewModel()
         {
-            // Aquí puedes inicializar propiedades si es necesario
-            _bookServices = new BookServices();
-            ListaProducto = new ObservableCollection<Producto>();
-            EjecutarBusquedaCommand = new AsyncRelayCommand(ObtenerProductoAsync);
-            GuardarLibroCommand = new AsyncRelayCommand(GuardarProductoAsync);
         }
 
-
+        // Constructor utilizado por el contenedor de servicios
         public ApiViewModel(BookServices bookServices)
         {
             _bookServices = bookServices;

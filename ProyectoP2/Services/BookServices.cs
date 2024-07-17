@@ -15,11 +15,6 @@ namespace ProyectoP2.Services
         private readonly VentaDbContext _context;
         private readonly ILogger<BookServices> _logger;
 
-        public BookServices()
-        {
-
-        }
-
         public BookServices(VentaDbContext context, ILogger<BookServices> logger)
         {
             _context = context;
@@ -28,14 +23,39 @@ namespace ProyectoP2.Services
 
         public async Task GuardarLibroAsync()
         {
-            var producto = await DevuelveProductoAsync();
-            if (producto != null)
+            try
             {
-                _context.Productos.Add(producto);
-                await _context.SaveChangesAsync();
-                _logger.LogInformation($"Producto guardado: {producto.Nombre}");
+                var producto = await DevuelveProductoAsync();
+                if (producto != null)
+                {
+                    var productoExistente = await _context.Productos
+                        .FirstOrDefaultAsync(p => p.Codigo == producto.Codigo);
+
+                    if (productoExistente != null)
+                    {
+                        // Incrementar la cantidad del producto existente
+                        productoExistente.Cantidad += producto.Cantidad;
+                        _context.Productos.Update(productoExistente);
+                        _logger.LogInformation($"Cantidad del producto existente incrementada: {productoExistente.Nombre}");
+                    }
+                    else
+                    {
+                        // Agregar un nuevo producto
+                        _context.Productos.Add(producto);
+                        _logger.LogInformation($"Producto guardado: {producto.Nombre}");
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al guardar el producto en la base de datos.");
+                throw; // Opcionalmente, puedes relanzar la excepción para propagarla
             }
         }
+
+
 
         public async Task<List<Producto>> DevulveListaDeProductosAsync()
         {
@@ -60,6 +80,7 @@ namespace ProyectoP2.Services
             var producto = JsonConvert.DeserializeObject<Producto>(responseJson);
            // _logger.LogInformation($"Producto obtenido de la API: {producto.Nombre}");
             return producto;
+
         }
     }
 }

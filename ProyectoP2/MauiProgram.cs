@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using ProyectoP2.DataAccess;
-using ProyectoP2.Services; // Asegúrate de agregar esta línea
+using ProyectoP2.Services;
 using ProyectoP2.ViewModels;
 using CommunityToolkit.Maui;
-using ProyectoP2.Views;
 using Microsoft.EntityFrameworkCore;
+using ProyectoP2.Views;
 
 namespace ProyectoP2
 {
@@ -48,7 +48,8 @@ namespace ProyectoP2
 
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddTransient<MainVM>();
-            builder.Services.AddTransient<Api>(); // Asegúrate de agregar esta línea
+
+            builder.Services.AddTransient<Api>();
             builder.Services.AddTransient<ApiViewModel>();
 
             var dbContext = new VentaDbContext();
@@ -64,7 +65,10 @@ namespace ProyectoP2
             Routing.RegisterRoute(nameof(BuscarProductoPage), typeof(BuscarProductoPage));
             Routing.RegisterRoute(nameof(Api), typeof(Api));
 
-            return builder.Build();
+            var app = builder.Build();
+            ServiceHelper.ServiceProvider = app.Services; // Guardar el contenedor de servicios
+
+            return app;
         }
     }
 }

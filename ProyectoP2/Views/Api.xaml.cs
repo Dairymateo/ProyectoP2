@@ -1,9 +1,17 @@
-namespace ProyectoP2.Views;
+using ProyectoP2.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using ProyectoP2.Services;
 
-public partial class Api : ContentPage
+namespace ProyectoP2.Views
 {
-	public Api()
-	{
-		InitializeComponent();
-	}
+    public partial class Api : ContentPage
+    {
+        public Api()
+        {
+            InitializeComponent();
+            // Obtener ApiViewModel desde el contenedor de servicios
+            var viewModel = ServiceHelper.ServiceProvider.GetRequiredService<ApiViewModel>();
+            this.BindingContext = viewModel;
+        }
+    }
 }
