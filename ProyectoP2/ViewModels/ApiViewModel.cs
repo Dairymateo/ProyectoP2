@@ -23,7 +23,7 @@ namespace ProyectoP2.ViewModels
             ListaProducto = new ObservableCollection<Producto>();
             ObtenerProductoAsync();
             EjecutarBusquedaCommand = new AsyncRelayCommand(ObtenerProductoAsync);
-            GuardarLibroCommand = new AsyncRelayCommand(GuardarProductoAsync);
+            //GuardarLibroCommand = new AsyncRelayCommand(GuardarProductoAsync);
         }
 
         [ObservableProperty]
@@ -50,11 +50,11 @@ namespace ProyectoP2.ViewModels
             LoadingEsVisible = false;
         }
 
-        private async Task GuardarProductoAsync()
+        /*private async Task GuardarProductoAsync()
         {
             LoadingEsVisible = true;
             await _bookServices.GuardarLibroAsync();
             LoadingEsVisible = false;
-        }
+        }*/
     }
 }

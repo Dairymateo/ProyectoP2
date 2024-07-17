@@ -13,7 +13,15 @@
         <ListView ItemsSource="{Binding ListaProducto}">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Text="{Binding Nombre}" Detail="{Binding cantidad}" />
+                    
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Padding="5">
+                                <Label Text="{Binding Nombre}" FontSize="18" />
+                                <Label Text="{Binding Precio, StringFormat='Precio: {0:C}'}" FontSize="16" />
+                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}" FontSize="16" />
+                            </StackLayout>
+                        </ViewCell>
+                   
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
@@ -23,14 +31,6 @@
             BackgroundColor="#2196F3"   
                 TextColor="White"
                 FontSize="16" />
-
-            <Button Text="Guardar Libro"
-            Command="{Binding GuardarLibroCommand}"
-            BackgroundColor="{StaticResource bgSuccess}"   
-                    TextColor="White"
-                    FontSize="16"
-            Margin="10,0,0,0" />
-                   
         </StackLayout>
 
         <ActivityIndicator IsVisible="{Binding LoadingEsVisible}" IsRunning="{Binding LoadingEsVisible}" />

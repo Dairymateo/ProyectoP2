@@ -33,7 +33,7 @@ namespace ProyectoP2.ViewModels
         private async Task ObtenerYGuardarProductoAsync()
         {
             LoadingEsVisible = true;
-            await _bookServices.GuardarLibroAsync();
+            object value = _bookServices.DevuelveProductoAsync;
             LoadingEsVisible = false;
             await VolverInventario();
         }

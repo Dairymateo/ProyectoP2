@@ -21,7 +21,7 @@ namespace ProyectoP2.Services
             _logger = logger;
         }
 
-        public async Task GuardarLibroAsync()
+        /*public async Task GuardarLibroAsync()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace ProyectoP2.Services
                 _logger.LogError(ex, "Error al guardar el producto en la base de datos.");
                 throw; // Opcionalmente, puedes relanzar la excepción para propagarla
             }
-        }
+        }*/
 
 
 
@@ -79,6 +79,38 @@ namespace ProyectoP2.Services
             Console.WriteLine(responseJson);
             var producto = JsonConvert.DeserializeObject<Producto>(responseJson);
            // _logger.LogInformation($"Producto obtenido de la API: {producto.Nombre}");
+            
+
+            try
+            {
+                
+                if (producto != null)
+                {
+                    var productoExistente = await _context.Productos
+                        .FirstOrDefaultAsync(p => p.Codigo == producto.Codigo);
+
+                    if (productoExistente != null)
+                    {
+                        // Incrementar la cantidad del producto existente
+                        productoExistente.Cantidad += producto.Cantidad;
+                        _context.Productos.Update(productoExistente);
+                        _logger.LogInformation($"Cantidad del producto existente incrementada: {productoExistente.Nombre}");
+                    }
+                    else
+                    {
+                        // Agregar un nuevo producto
+                        _context.Productos.Add(producto);
+                        _logger.LogInformation($"Producto guardado: {producto.Nombre}");
+                    }
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al guardar el producto en la base de datos.");
+                throw; // Opcionalmente, puedes relanzar la excepción para propagarla
+            }
             return producto;
 
         }
